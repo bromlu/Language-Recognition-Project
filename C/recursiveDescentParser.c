@@ -50,19 +50,14 @@ void parseLength(int alreadyHadSpan) {
         lookahead = next(file);
         parseVerse(alreadyHadSpan);
     } 
-    if(lookahead == '-') {
+    if(lookahead == '-') {        
         lookahead = next(file);
-        if(lookahead == '-') {
-            lookahead = next(file);
-            if(alreadyHadSpan == 1) {
-                printError("Cannot have two spans in reference");
-            } else if(lookahead == D) {
-                parseChapter(1);
-            } else {
-                printError("number expected");
-            }
+        if(alreadyHadSpan == 1) {
+            printError("Cannot have two spans in reference");
+        } else if(lookahead == D) {
+            parseChapter(1);
         } else {
-            printError("'-' expected");
+            printError("number expected");
         }
     } 
 }
