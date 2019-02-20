@@ -36,26 +36,28 @@ void parseBook() {
     parseName();
 }
 
-void parseChapter() {
+void parseChapter(int alreadyHadSpan) {
     lookahead = next(file);
     if(lookahead == ':') {
         lookahead = next(file);
-        parseVerse();
+        parseVerse(alreadyHadSpan);
     }
 }
 
-void parseLength() {
+void parseLength(int alreadyHadSpan) {
     lookahead = next(file);
     if(lookahead == ',') {
         lookahead = next(file);
-        parseVerse();
+        parseVerse(alreadyHadSpan);
     } 
     if(lookahead == '-') {
         lookahead = next(file);
         if(lookahead == '-') {
             lookahead = next(file);
-            if(lookahead == D) {
-                parseReference();
+            if(alreadyHadSpan == 1) {
+                printError("Cannot have two spans in reference");
+            } else if(lookahead == D) {
+                parseChapter(1);
             } else {
                 printError("number expected");
             }
@@ -65,9 +67,9 @@ void parseLength() {
     } 
 }
 
-void parseVerse() {
+void parseVerse(int alreadyHadSpan) {
     if(lookahead == D) {
-        parseLength();
+        parseLength(alreadyHadSpan);
     } else {
         printError("number expected");
     }
@@ -75,7 +77,7 @@ void parseVerse() {
 
 void parseReference() {
     if(lookahead == D) {
-        parseChapter();
+        parseChapter(0);
         if(lookahead == ';') {
             lookahead = next(file);
             parseReference();
