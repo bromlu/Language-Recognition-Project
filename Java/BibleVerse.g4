@@ -1,6 +1,6 @@
 grammar BibleVerse;
 
-prog: (bibleVerseReference '\n')* bibleVerseReference EOF;
+prog: (bibleVerseReference NEWLINE)* bibleVerseReference EOF;
 
 bibleVerseReference : ordinal? name reference? translation?;
 
@@ -9,12 +9,21 @@ ordinal : DIGIT ;
 name : WORD ;
 
 reference   : x
-            | x';'reference
-            | x';'
-            | reference '--' reference;
+            | x ';' reference
+            | x ';'
+            | span
+            | span ';' reference ;
+
+span : nolengthx '-' nolengthx ;
+
+nolengthx : chapter
+          | chapter ':' nolengthverse ;
+
+nolengthverse : DIGIT
+              | DIGIT ',' DIGIT ;
 
 x   : chapter
-    | chapter':'verse ;
+    | chapter ':' verse ;
 
 chapter : DIGIT ;
 
@@ -22,7 +31,7 @@ verse   : length
         | length','verse ;
 
 length  : DIGIT
-        | DIGIT '--' DIGIT ;
+        | DIGIT '-' DIGIT ;
 
 translation : '('WORD')' ;
 
