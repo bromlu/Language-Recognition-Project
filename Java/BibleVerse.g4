@@ -1,6 +1,6 @@
 grammar BibleVerse;
 
-prog: bibleVerseReference EOF;
+prog: (bibleVerseReference '\n')* bibleVerseReference EOF;
 
 bibleVerseReference : ordinal? name reference? translation?;
 
@@ -10,6 +10,7 @@ name : WORD ;
 
 reference   : x
             | x';'reference
+            | x';'
             | reference '--' reference;
 
 x   : chapter

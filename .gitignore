@@ -3,3 +3,6 @@
 .idea
 .log
 recursiveDescentParser
+*.iml
+Java/out/*
+Java/gen/*
